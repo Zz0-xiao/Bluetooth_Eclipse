@@ -21,11 +21,14 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.UUID;
 
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -34,6 +37,8 @@ import android.util.Log;
 /**
  * 这门课做所有的工作对蓝牙的设置和管理 与其他设备连接。它有一个线程,监听 传入的连接、螺纹连接的设备, 当连接线程来执行数据传输。
  */
+@TargetApi(Build.VERSION_CODES.ECLAIR)
+@SuppressLint("NewApi")
 public class BluetoothChatService {
 	// Debugging
 	private static final String TAG = "BluetoothChatService";
@@ -42,7 +47,7 @@ public class BluetoothChatService {
 	// SDP的名字记录在创建服务器套接字
 	private static final String NAME = "BluetoothChat";
 
-	// 独特的UUID对于这个应用程序
+	// 独特的UUID对于这个应用程序 
 
 	private static final UUID MY_UUID = UUID
 			.fromString("00001101-0000-1000-8000-00805F9B34FB");
@@ -67,6 +72,7 @@ public class BluetoothChatService {
 	 * @param上下文UI活动上下文
 	 * @param处理程序处理程序发送消息回UI的活动
 	 */
+	@SuppressLint("NewApi")
 	public BluetoothChatService(Context context, Handler handler) {
 		mAdapter = BluetoothAdapter.getDefaultAdapter();
 		mState = STATE_NONE;
@@ -157,6 +163,7 @@ public class BluetoothChatService {
 	 * @param插座连接的BluetoothSocket
 	 * @param设备的BluetoothDevice连接
 	 */
+	@SuppressLint("NewApi")
 	public synchronized void connected(BluetoothSocket socket,
 			BluetoothDevice device) {
 		if (D)
@@ -265,10 +272,13 @@ public class BluetoothChatService {
 	/**
 	 * 这个线程运行,监听传入的连接。它像一个服务器端端。 它运行到一个连接被接受(或者直到取消)。
 	 */
+	@TargetApi(Build.VERSION_CODES.ECLAIR)
+	@SuppressLint("NewApi")
 	private class AcceptThread extends Thread {
 		// The local server socket
 		private final BluetoothServerSocket mmServerSocket;
 
+		@SuppressLint("NewApi")
 		public AcceptThread() {
 			BluetoothServerSocket tmp = null;
 
@@ -282,6 +292,7 @@ public class BluetoothChatService {
 			mmServerSocket = tmp;
 		}
 
+		@SuppressLint("NewApi")
 		public void run() {
 			if (D)
 				Log.d(TAG, "BEGIN mAcceptThread" + this);
@@ -338,10 +349,13 @@ public class BluetoothChatService {
 	/**
 	 * 这个线程运行时试图做一个外向的连接 一个设备。它运行直通;连接 成功或失败。
 	 */
+	@TargetApi(Build.VERSION_CODES.ECLAIR)
+	@SuppressLint("NewApi")
 	private class ConnectThread extends Thread {
 		private final BluetoothSocket mmSocket;
 		private final BluetoothDevice mmDevice;
 
+		@SuppressLint("NewApi")
 		public ConnectThread(BluetoothDevice device) {
 			mmDevice = device;
 			BluetoothSocket tmp = null;
@@ -356,6 +370,7 @@ public class BluetoothChatService {
 			mmSocket = tmp;
 		}
 
+		@TargetApi(Build.VERSION_CODES.ECLAIR)
 		public void run() {
 			Log.i(TAG, "BEGIN mConnectThread");
 			setName("ConnectThread");
@@ -404,6 +419,8 @@ public class BluetoothChatService {
 	/**
 	 * 这个线程运行在一个远程设备的连接。它处理所有 传入和传出的传输。
 	 */
+	@TargetApi(Build.VERSION_CODES.ECLAIR)
+	@SuppressLint("NewApi")
 	private class ConnectedThread extends Thread {
 		private final BluetoothSocket mmSocket;
 		private final InputStream mmInStream;

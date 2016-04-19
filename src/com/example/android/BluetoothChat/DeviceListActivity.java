@@ -18,6 +18,8 @@ package com.example.android.BluetoothChat;
 
 import java.util.Set;
 
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -25,6 +27,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -40,12 +43,14 @@ import android.widget.AdapterView.OnItemClickListener;
 /**
  * 这个活动是一个对话框。它列出任何配对设备和设备检测后发现。由用户选择设备时,设备的MAC地址被发送回父母的活动 结果意图。
  */
+@TargetApi(Build.VERSION_CODES.ECLAIR)
+@SuppressLint("NewApi")
 public class DeviceListActivity extends Activity {
 	// Debugging
 	private static final String TAG = "DeviceListActivity";
 	private static final boolean D = true;
 
-	// 返回额外的意图
+	// 返回额外的意图 
 	public static String EXTRA_DEVICE_ADDRESS = "device_address";
 
 	// 成员字段
@@ -53,6 +58,8 @@ public class DeviceListActivity extends Activity {
 	private ArrayAdapter<String> mPairedDevicesArrayAdapter;
 	private ArrayAdapter<String> mNewDevicesArrayAdapter;
 
+	@TargetApi(Build.VERSION_CODES.ECLAIR)
+	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -134,6 +141,8 @@ public class DeviceListActivity extends Activity {
 	/**
 	 * 开始与BluetoothAdapter设备发现
 	 */
+	@TargetApi(Build.VERSION_CODES.ECLAIR)
+	@SuppressLint("NewApi")
 	private void doDiscovery() {
 		if (D)
 			Log.d(TAG, "doDiscovery()");
@@ -178,6 +187,8 @@ public class DeviceListActivity extends Activity {
 	// BroadcastReceiver侦听发现设备和
 	//当发现完成更改标题
 	private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+		@TargetApi(Build.VERSION_CODES.ECLAIR)
+		@SuppressLint("NewApi")
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			String action = intent.getAction();
